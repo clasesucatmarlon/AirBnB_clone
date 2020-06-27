@@ -11,25 +11,21 @@ class FileStorage:
         return self.__objects
     
     def new(self, obj):
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
+        keypass = "{}.{}".format(obj.__class__.__name__, obj.id)
+        self.__objects[keypass] = obj
 
     def save(self):
-        json_object = {}
-        for key in self.__objects:
-            json_object[key] = self.__objects[key].to_dict()
+        new_json_object = {}
+        for keypass in self.__objects:
+            new_json_object[keypass] = self.__objects[keypass].to_dict()
         with open(self.__file_path, 'w') as f:
-            f.write(dumps(json_object))
+            f.write(dumps(new_json_object))
 
     def reload(self):
         try:
             with open(self.__file_path, 'r') as f:
-                for key, value in loads(f.read()).items():
-                    ins = eval(value["__class__"])(**value)
-                    self.__objects[key] = ins
+                for keypass, dummy in loads(f.read()).items():
+                    ins = eval(dummy["__class__"])(**dummy)
+                    self.__objects[keypass] = ins
         except FileNotFoundError:
             pass
-
-
-
-

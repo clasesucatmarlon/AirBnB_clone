@@ -34,7 +34,7 @@ class BaseModel:
     return "[{}] ({}) {}".format(name, id, dicti)
   
   def to_dict(self):
-
+    # Arreglar error en el tiempo de update, debe ser igual created
     dictionary = {
       "name" : self.name,
       "id" : self.id,

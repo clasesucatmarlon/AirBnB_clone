@@ -1,6 +1,7 @@
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models import storage
+import json
 
 def task1():
     my_model = BaseModel()
@@ -50,4 +51,15 @@ def task3():
     my_model.save()
     print(my_model)
 
-task3()
+d = {}
+with open('file.json', 'r') as f:
+    d = json.loads(f.read())
+
+keys = list(d.keys())
+value = d.values()
+
+for i in range(len(keys)):
+    print(f'Model: {keys[i]}')
+    print(f'Created at -> {d[keys[i]]["created_at"]}')
+    print(f'Updated at -> {d[keys[i]]["update_at"]}')
+    print('------------')

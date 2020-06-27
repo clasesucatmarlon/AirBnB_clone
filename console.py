@@ -1,7 +1,7 @@
 import cmd
 from json import loads, dumps
 from models.base_model import BaseModel
-from models import classes
+from models import class_names
 
 class HBNBCommand(cmd.Cmd):
     """Interprete de comandos"""
@@ -59,12 +59,12 @@ class HBNBCommand(cmd.Cmd):
         with open('file.json', 'r') as jsonfile:
             tmp_dictionary = loads(jsonfile.read())
         for key, value in tmp_dictionary.items():
-            tmp_str = str(key + str(value))
+            tmp_str = str(key + ' ' + str(value))
             aux_list.append(tmp_str)
         if len(arg) == 0:
             print(aux_list)
         else:
-            if arg not in classes:
+            if arg not in class_names:
                 print("** class doesn't exist **")
                 return 0
             else:
