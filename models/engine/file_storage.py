@@ -1,5 +1,5 @@
 from os import getcwd
-from json import dumps, loads
+from json import dumps, loads, dump
 from models.base_model import BaseModel
 import json
 
@@ -18,8 +18,11 @@ class FileStorage:
         new_json_object = {}
         for keypass in self.__objects:
             new_json_object[keypass] = self.__objects[keypass].to_dict()
-        with open(self.__file_path, 'w') as f:
-            f.write(dumps(new_json_object))
+        with open(self.__file_path, 'a') as f:
+            # f.write(dumps(new_json_object))
+            dump(new_json_object, f)
+        
+ 
 
     def reload(self):
         try:
