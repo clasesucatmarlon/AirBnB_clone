@@ -1,6 +1,7 @@
 import cmd
 from json import loads, dumps
 from models.base_model import BaseModel
+from models import classes
 
 class HBNBCommand(cmd.Cmd):
     """Interprete de comandos"""
@@ -18,10 +19,13 @@ class HBNBCommand(cmd.Cmd):
                 new.save()
                 print(new.id)
             except NameError:
-                print('** class doesnt exist **')
+                print("** class doesn't exist **")
                 pass
     
     def do_show(self, args):
+        """
+        Print the string representation of the instance in Json File
+        """
         tmp_dictionary = {}
         parsed = args.split(' ')
         if parsed == ['']:
@@ -36,7 +40,7 @@ class HBNBCommand(cmd.Cmd):
             try:
                 new_ins = eval(instancia)
             except:
-                print('** class doesnt exist **')
+                print("** class doesn't exist **")
                 return 0
             try:
                 new_ins = eval(instancia)(**tmp_dictionary[key])
@@ -47,6 +51,24 @@ class HBNBCommand(cmd.Cmd):
         else:
             pass
 
+    def do_all(self, arg):
+        """
+        Print all string representation of all instances in Json File
+        """
+        aux_list = []
+        with open('file.json', 'r') as jsonfile:
+            tmp_dictionary = loads(jsonfile.read())
+        for key, value in tmp_dictionary.items():
+            tmp_str = str(key + str(value))
+            aux_list.append(tmp_str)
+        if len(arg) == 0:
+            print(aux_list)
+        else:
+            if arg not in classes:
+                print("** class doesn't exist **")
+                return 0
+            else:
+                print(aux_list)
 
     def do_quit(self, args):
         """
