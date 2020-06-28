@@ -1,4 +1,4 @@
-from models.base_model import BaseModel
+from models.base_model import BaseModel, time_conversor
 from datetime import datetime
 
 
@@ -12,8 +12,8 @@ class User(BaseModel):
 
     def __str__(self):
         self.__dict__.update({
-            "created_at": datetime.fromisoformat(self.created_at),
-            "updated_at": datetime.fromisoformat(self.updated_at),
+            "created_at": time_conversor(self.created_at),
+            "updated_at": time_conversor(self.updated_at),
             "email" : self.email,
             "password" : self.password,
             "first_name" : self.first_name,
@@ -24,9 +24,9 @@ class User(BaseModel):
     
     def to_dict(self):
         if type(self.created_at) in [str]:
-            self.created_at = datetime.fromisoformat(self.created_at)
+            self.created_at = time_conversor(self.created_at)
         if type(self.updated_at) in [str]:
-            self.updated_at = datetime.fromisoformat(self.updated_at)
+            self.updated_at = time_conversor(self.updated_at)
         self.__dict__.update({
             "email" : self.email,
             "password" : self.password,
