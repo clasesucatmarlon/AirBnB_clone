@@ -2,7 +2,7 @@ from models.base_model import BaseModel, time_conversor
 from datetime import datetime
 
 
-class User(BaseModel):
+class Review(BaseModel):
     place_id = ""
     user_id = ""
     text = ""
