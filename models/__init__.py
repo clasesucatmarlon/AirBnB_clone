@@ -5,4 +5,4 @@ from models.engine.file_storage import FileStorage
 storage = FileStorage()
 storage.reload()
 
-classes = ["BaseModel", "User"]
+classes = ["BaseModel", "User", "State", "City", "Amenity"]
