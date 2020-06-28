@@ -56,26 +56,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             pass
 
-    def do_destroy(self, arg):
-        'Deletes an instance based on the class name and id'
-        args = parse(arg)
-        if not args:
-            print("** class name missing **")
-        elif args[0] not in HBNBCommand.classDict:
-            print("** class doesn't exist **")
-        elif len(args) < 2:
-            print("** instance id missing **")
-        else:
-            objects = models.storage.all()
-            for k, v in objects.items():
-                obj_id = objects[k].id
-                obj_class = objects[k].__class__.__name__
-                if obj_id == args[1] and args[0] == obj_class:
-                    del objects[k]
-                    models.storage.save()
-                    break
-            else:
-                print("** no instance found **")
 
     def do_all(self, arg):
         """
@@ -107,11 +87,11 @@ class HBNBCommand(cmd.Cmd):
             instancia, instance_id = parsed[0], parsed[1]
             tmp_dictionary = models.storage.all()
             key = instancia + '.' + instance_id
-            if instancia not in class_names:
+            if instancia not in classes:
                 print("** class doesn't exist **")
                 return 0
             try:
-                eval(instancia)(**tmp_dictionary[key])
+                eval(instancia)(**tmp_dictionary[key].to_dict())
             except:
                 print('** no instance found **')
                 return 0
@@ -120,41 +100,6 @@ class HBNBCommand(cmd.Cmd):
                 del tmp_dictionary[key]
                 models.storage.save()
 
-    def do_update(self, args):
-        parsed = args.split(' ')
-
-        if parsed == ['']:
-            print("** class name missing **")
-            return 0
-
-        if len(parsed) < 2:
-            print("** instance id missing **")
-            return 0
-
-        if parsed[0] not in class_names:
-            print("** class doesn't exist **")
-            return 0
-
-        # test instance
-        instance_dict = models.storage.all()
-        key = "{}.{}".format(parsed[0], parsed[1])
-        if key not in instance_dict:
-            print("** no instance found **")
-            return 0
-
-        if len(parsed) < 3:
-            print('** attribute name missing **')
-            return 0
-        elif len(parsed) < 4:
-            print('** value missing **')
-        else:
-            parsed = parsed[0:4]
-            with open('file.json', 'r+') as file:
-                tmp_d = loads(file.read())
-                tmp_d[key].update({parsed[2] : parsed[3]})
-            with open('file.json', 'w') as file:
-                file.write(dumps(tmp_d))
-                models.storage.save()
 
     def do_update(self, arg):
         'Updates an instance based on the class name and id'
