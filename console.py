@@ -1,18 +1,29 @@
 import cmd
-from json import loads, dumps
-from models.base_model import BaseModel
-from models import classes
-from models.user import User
 import models
 import shlex
+from json import loads, dumps
+from models import classes
+from models.base_model import BaseModel
+from models.city import City
+from models.user import User
+from models.state import State
+from models.review import Review
+from models.amenity import Amenity
+from models.place import Place
+
 
 class HBNBCommand(cmd.Cmd):
     """Interprete de comandos"""
+    prompt = "(hbnb) "
     classDict = {
         "BaseModel": BaseModel,
-        "User" : User
+        "User" : User,
+        "City" : City,
+        "State" : State,
+        "Review" : Review,
+        "Amenity" : Amenity,
+        "Place" : Place
     }
-    prompt = "(hbnb) "
 
     def do_create(self, args):
         """
