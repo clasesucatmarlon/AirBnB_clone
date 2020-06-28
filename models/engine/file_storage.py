@@ -1,35 +1,33 @@
-from os import getcwd
-from json import dumps, loads
+#!/usr/bin/python3
 from models.base_model import BaseModel
 import json
+import os
+
 
 class FileStorage:
-    __file_path = 'file.json'
+
+    __file_path = "file.json"
     __objects = {}
 
     def all(self):
         return self.__objects
-    
+
     def new(self, obj):
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
+        self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
-        json_object = {}
-        for key in self.__objects:
-            json_object[key] = self.__objects[key].to_dict()
-        with open(self.__file_path, 'w') as f:
-            f.write(dumps(json_object))
+        with open(self.__file_path, "w", encoding="UTF-8") as f:
+            obj_dict = {k: v.to_dict() for k, v in self.__objects.items()}
+            json.dump(obj_dict, f)
 
     def reload(self):
-        try:
-            with open(self.__file_path, 'r') as f:
-                for key, value in loads(f.read()).items():
-                    ins = eval(value["__class__"])(**value)
-                    self.__objects[key] = ins
-        except FileNotFoundError:
-            pass
-
-
-
-
+        all_class = {
+                "BaseModel": BaseModel}
+        if os.path.isfile(self.__file_path):
+            with open(self.__file_path, "r", encoding="UTF-8") as f:
+                obj_dict = json.load(f)
+                for k, v in obj_dict.items():
+                    name = k.split('.')[0]
+                    if name in all_class:
+                        obj = all_class[name](**v)
+                    self.__class__.__objects[k] = obj

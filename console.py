@@ -2,9 +2,14 @@ import cmd
 from json import loads, dumps
 from models.base_model import BaseModel
 from models import classes
+import models
+import shlex
 
 class HBNBCommand(cmd.Cmd):
     """Interprete de comandos"""
+    classDict = {
+            "BaseModel": BaseModel,
+        }
     prompt = "(hbnb) "
 
     def do_create(self, args):
@@ -51,6 +56,27 @@ class HBNBCommand(cmd.Cmd):
         else:
             pass
 
+    def do_destroy(self, arg):
+        'Deletes an instance based on the class name and id'
+        args = parse(arg)
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in HBNBCommand.classDict:
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        else:
+            objects = models.storage.all()
+            for k, v in objects.items():
+                obj_id = objects[k].id
+                obj_class = objects[k].__class__.__name__
+                if obj_id == args[1] and args[0] == obj_class:
+                    del objects[k]
+                    models.storage.save()
+                    break
+            else:
+                print("** no instance found **")
+
     def do_all(self, arg):
         """
         Print all string representation of all instances in Json File
@@ -70,6 +96,48 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print(aux_list)
 
+    def do_update(self, arg):
+        'Updates an instance based on the class name and id'
+        args = parse(arg)
+        objects = models.storage.all()
+        if not args:
+            print("** class name missing **")
+            return 0
+        elif args[0] not in classes:
+            print("** class doesn't exist **")
+            return 0
+        elif len(args) < 2:
+            print("** instance id missing **")
+            return 0
+        elif len(args) < 3:
+            print("** attribute name missing **")
+            return 0
+        elif len(args) < 4:
+            print("** value missing **")
+            return 0
+        else:
+            found = False
+        
+        key = "{}.{}".format(args[0], args[1])
+        try:
+            objects[key].__dict__[args[2]] = args[3]
+            models.storage.save()
+        except:
+            print("** no instance found **")
+            return 0
+        """
+            for k, v in objects.items():
+                obj_id = objects[k].id
+                if obj_id == args[1]:
+                    found = True
+                    obj_dict = objects[k].__dict__
+                    input_value = args[3]
+                    obj_dict[args[2]] = input_value
+                    models.storage.save()
+            if not found:
+                print("** no instance found **")
+        """
+
     def do_quit(self, args):
         """
         Quit command to exit the program
@@ -88,6 +156,11 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
+def parse(arg):
+        """
+        Parse arguments and split by space
+        """
+        return tuple(shlex.split(arg))
 
 if __name__ == '__main__':
     interprete = HBNBCommand()
