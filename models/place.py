@@ -21,10 +21,17 @@ class Place(BaseModel):
         self.__dict__.update({
             "created_at": time_conversor(self.created_at),
             "updated_at": time_conversor(self.updated_at),
-            "email" : self.email,
-            "password" : self.password,
-            "first_name" : self.first_name,
-            "last_name" : self.last_name,
+            "city_id" : self.city_id,
+            "user_id" : self.user_id,
+            "name" : self.name,
+            "description" : self.description,
+            "number_rooms" : self.number_rooms,
+            "number_bathrooms" : self.number_bathrooms,
+            "max_guest" : self.max_guest,
+            "price_by_night" : self.price_by_night,
+            "latitude" : self.latitude,
+            "longitude" : self.longitude,
+            "amenity_ids" : self.amenity_ids,
             "__class__" : self.__class__.__name__
         })
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id, self.__dict__)
