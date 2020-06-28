@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from models.base_model import BaseModel
+from models.user import User
 import json
 import os
 
@@ -18,11 +19,13 @@ class FileStorage:
     def save(self):
         with open(self.__file_path, "w", encoding="UTF-8") as f:
             obj_dict = {k: v.to_dict() for k, v in self.__objects.items()}
-            json.dump(obj_dict, f)
+            json.dump(obj_dict, f, indent=4, sort_keys=True, default=str)
 
     def reload(self):
         all_class = {
-                "BaseModel": BaseModel}
+            "BaseModel": BaseModel,
+            "User" : User
+        }
         if os.path.isfile(self.__file_path):
             with open(self.__file_path, "r", encoding="UTF-8") as f:
                 obj_dict = json.load(f)

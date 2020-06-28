@@ -2,14 +2,16 @@ import cmd
 from json import loads, dumps
 from models.base_model import BaseModel
 from models import classes
+from models.user import User
 import models
 import shlex
 
 class HBNBCommand(cmd.Cmd):
     """Interprete de comandos"""
     classDict = {
-            "BaseModel": BaseModel,
-        }
+        "BaseModel": BaseModel,
+        "User" : User
+    }
     prompt = "(hbnb) "
 
     def do_create(self, args):
@@ -90,11 +92,7 @@ class HBNBCommand(cmd.Cmd):
             if instancia not in classes:
                 print("** class doesn't exist **")
                 return 0
-            try:
-                eval(instancia)(**tmp_dictionary[key].to_dict())
-            except:
-                print('** no instance found **')
-                return 0
+            # !! aca se debe encontrar una nueva forma de validar instancia
             if key in tmp_dictionary:
                 print("Encontrado")
                 del tmp_dictionary[key]
@@ -130,18 +128,7 @@ class HBNBCommand(cmd.Cmd):
         except:
             print("** no instance found **")
             return 0
-        """
-            for k, v in objects.items():
-                obj_id = objects[k].id
-                if obj_id == args[1]:
-                    found = True
-                    obj_dict = objects[k].__dict__
-                    input_value = args[3]
-                    obj_dict[args[2]] = input_value
-                    models.storage.save()
-            if not found:
-                print("** no instance found **")
-        """
+
 
     def do_quit(self, args):
         """
