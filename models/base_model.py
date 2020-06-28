@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 from uuid import uuid4
 from datetime import datetime
 import models
@@ -21,6 +22,10 @@ class BaseModel:
             models.storage.new(self)
 
     def __str__(self):
+        self.__dict__.update({
+            "created_at": datetime.fromisoformat(self.created_at),
+            "updated_at": datetime.fromisoformat(self.updated_at),
+        })
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def __repr__(self):

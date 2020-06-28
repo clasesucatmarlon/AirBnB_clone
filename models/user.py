@@ -10,9 +10,10 @@ class User(BaseModel):
     def __init__(self, *args, **kwargs):
         BaseModel.__init__(self, *args, **kwargs)
 
-
     def __str__(self):
         self.__dict__.update({
+            "created_at": datetime.fromisoformat(self.created_at),
+            "updated_at": datetime.fromisoformat(self.updated_at),
             "email" : self.email,
             "password" : self.password,
             "first_name" : self.first_name,
@@ -26,13 +27,13 @@ class User(BaseModel):
             self.created_at = datetime.fromisoformat(self.created_at)
         if type(self.updated_at) in [str]:
             self.updated_at = datetime.fromisoformat(self.updated_at)
-        self.created_at = self.created_at.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
-        self.updated_at = self.updated_at.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
         self.__dict__.update({
             "email" : self.email,
             "password" : self.password,
             "first_name" : self.first_name,
             "last_name" : self.last_name,
+            "created_at" : self.created_at.strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
+            "updated_at" : self.updated_at.strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
             "__class__" : self.__class__.__name__
         })
         return self.__dict__
