@@ -42,10 +42,17 @@ class Place(BaseModel):
         if type(self.updated_at) in [str]:
             self.updated_at = time_conversor(self.updated_at)
         self.__dict__.update({
-            "email" : self.email,
-            "password" : self.password,
-            "first_name" : self.first_name,
-            "last_name" : self.last_name,
+            "city_id" : self.city_id,
+            "user_id" : self.user_id,
+            "name" : self.name,
+            "description" : self.description,
+            "number_rooms" : self.number_rooms,
+            "number_bathrooms" : self.number_bathrooms,
+            "max_guest" : self.max_guest,
+            "price_by_night" : self.price_by_night,
+            "latitude" : self.latitude,
+            "longitude" : self.longitude,
+            "amenity_ids" : self.amenity_ids,
             "created_at" : self.created_at.strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
             "updated_at" : self.updated_at.strftime('%Y-%m-%dT%H:%M:%S.%f%z'),
             "__class__" : self.__class__.__name__
