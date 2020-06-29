@@ -18,7 +18,7 @@ class City(BaseModel):
             "__class__" : self.__class__.__name__
         })
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id, self.__dict__)
-    
+
     def to_dict(self):
         if type(self.created_at) in [str]:
             self.created_at = time_conversor(self.created_at)

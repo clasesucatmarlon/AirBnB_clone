@@ -24,10 +24,40 @@ class HBNBCommand(cmd.Cmd):
         "Amenity" : Amenity,
         "Place" : Place
     }
+    def default(self, line):
+        #print('default({})'.format(line))
+        '''
+            Method that checks if the input contains dot, if false
+            print the message error
+        '''
+        if '.' not in line:
+            return cmd.Cmd.default(self, line)
+
+    def onecmd(self, s):
+        '''
+        Preproccesor of the command Line, all arguments will be here after executing
+        so we can validate if there's any ocurrence with <class> . <method> of the existing
+        classes
+        '''
+        if '.' in s:
+            print('Yes')
+        return cmd.Cmd.onecmd(self, s)
 
     def do_create(self, args):
         """
-        Create new model of a class 'Base model'
+        Create - Create new model of a class
+        -----------------------------------------------------
+        available models:
+        - BaseModel
+        - Amenity
+        - City
+        - Place
+        - Review
+        - User
+        - State
+        -----------------------------------------------------
+        @ usage - > <command> <model> {ex: create BaseModel}
+
         """
         if len(args) < 2:
             print('** class name missing **')
@@ -42,7 +72,18 @@ class HBNBCommand(cmd.Cmd):
     
     def do_show(self, args):
         """
-        Print the string representation of the instance in Json File
+        show - show Python object representation of json object
+        -----------------------------------------------------
+        available models:
+        - BaseModel
+        - Amenity
+        - City
+        - Place
+        - Review
+        - User
+        - State
+        -----------------------------------------------------
+        @ usage - > <command> <model> <id> {ex: show BaseModel 123asd1272bn28dn}
         """
         tmp_dictionary = {}
         parsed = args.split(' ')
@@ -72,7 +113,18 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """
-        Print all string representation of all instances in Json File
+        all - show all list of json objects
+        -----------------------------------------------------
+        available models:
+        - BaseModel
+        - Amenity
+        - City
+        - Place
+        - Review
+        - User
+        - State
+        -----------------------------------------------------
+        @ usage - > <command> <model> {ex: all BaseModel}
         """
         aux_list = []
         with open('file.json', 'r') as jsonfile:
@@ -83,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
         if len(arg) == 0:
             print(aux_list)
         else:
-            if arg not in class_names:
+            if arg not in classes:
                 print("** class doesn't exist **")
                 return 0
             else:
@@ -129,9 +181,7 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) < 4:
             print("** value missing **")
             return 0
-        else:
-            found = False
-        
+
         key = "{}.{}".format(args[0], args[1])
         try:
             objects[key].__dict__[args[2]] = args[3]
