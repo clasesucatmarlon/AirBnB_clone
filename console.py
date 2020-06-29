@@ -86,7 +86,8 @@ def pre_show(classname, method_value):
         except KeyError:
             print("** instance not found **")
 
-
+def pre_destroy(classname, method_value):
+    print(method_value)
 
 # --------------------------
 
@@ -132,6 +133,11 @@ class HBNBCommand(cmd.Cmd):
                         return cmd.Cmd.default(self, line)
                     else:
                         pre_show(parsed[0], pre_parse(parsed[1]))
+                elif pre_parse(parsed[1])[0] == "destroy":
+                    if pre_parse(parsed[1])[1] == '':
+                        return cmd.Cmd.default(self, line)
+                    else:
+                        pre_destroy(parsed[0], pre_parse(parsed[1]))
             else:
                 return cmd.Cmd.default(self, line)
 
