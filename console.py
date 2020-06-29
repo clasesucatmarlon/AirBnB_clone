@@ -8,7 +8,7 @@
     - Pon tu informacion plis xd
 
 """
-
+import ast
 import cmd
 import models
 import shlex
@@ -23,7 +23,7 @@ from models.amenity import Amenity
 from models.place import Place
 
 # Preprocessor (onecmd) functions
-def pre_parse(arg):
+def pre_parse(arg, quoating=False):
     method, value = "", ""
     flag = False
     
@@ -35,8 +35,9 @@ def pre_parse(arg):
                 flag = True
                 continue
             if flag is True:
-                if char == '"':
-                    continue
+                if not quoating:
+                    if char == '"':
+                        continue
                 value += char
             if flag is False:
                 method += char
@@ -93,10 +94,46 @@ def pre_destroy(classname, method_value):
     if classname not in classes:
         print("** class doesn't exist **")
     else:
-        print(method_value)
+        store = models.storage.all()
+        keys = list(store.keys())
+        key = "{}.{}".format(classname, method_value[1])
+        if key not in keys:
+            print('** Instance not found **')
+        else:
+            del store[key]
+            models.storage.save()
+        
+def pre_update(classname, method_value):
+    if classname not in classes:
+        print("** class doesn't exist **")
+    else:
+        parsed = method_value[1].split(',')
+        if len(parsed) != 2:
+            print('** update receive 2 arguments {} got)'.format(len(parsed)))
+        else:
+            ide, data = parsed[0], parsed[1].strip()
+            if ide[0] == '"':
+                ide = ide[1:-1]
+            key = "{}.{}".format(classname, ide)
+
+            try:
+                dummyDict = eval(data)
+                print('nope')
+                if type(dummyDict) not in [dict]:
+                    raise TypeError
+                store = models.storage.all()
+                keys = list(store.keys())
+            except:
+                print('** Second argument should be type dictionary **')
+                return 0
+            if key not in keys:
+                print("** instance not found **")
+            else:
+                print(type(dummyDict))
+                store[key].__dict__.update(dummyDict)
+                models.storage.save()
 
 # --------------------------
-
 
 class HBNBCommand(cmd.Cmd):
     """Interprete de comandos"""
@@ -144,6 +181,11 @@ class HBNBCommand(cmd.Cmd):
                         return cmd.Cmd.default(self, line)
                     else:
                         pre_destroy(parsed[0], pre_parse(parsed[1]))
+                elif pre_parse(parsed[1])[0] == "update":
+                    if pre_parse(parsed[1])[1] == '':
+                        return cmd.Cmd.default(self, line)
+                    else:
+                        pre_update(parsed[0], pre_parse(parsed[1], True))
             else:
                 return cmd.Cmd.default(self, line)
 
