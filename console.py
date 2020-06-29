@@ -30,13 +30,13 @@ def pre_method_validator(arg):
         return True
 
 def pre_all_handler(parsed):
-    jsonList = [{}]
+    jsonList = []
     store = models.storage.all()
-    for keys, values in store.items():
+    for values in store.values():
         if  values.to_dict()['__class__'] in parsed:
-            jsonList[0].update({keys : values})
+            jsonList.append(values)
     else:
-        if jsonList == [{}]:
+        if jsonList == []:
             print('** No such model: {}'.format(parsed[0]))
         else:
             print(jsonList)
@@ -44,7 +44,7 @@ def pre_all_handler(parsed):
 def pre_count_handler(parsed):
     instances = 0
     store = models.storage.all()
-    for keys, values in store.items():
+    for values in store.values():
         if  values.to_dict()['__class__'] in parsed:
             instances += 1
     else:
@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
                 new = eval(args)()
                 new.save()
                 print(new.id)
-            except NameError:
+            except (NameError, SyntaxError):
                 print("** class doesn't exist **")
                 pass
     
