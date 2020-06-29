@@ -1,3 +1,14 @@
+#/usr/bin/env python3
+
+"""
+
+    HBNBCommand - command Line tool for Airbnb clone
+    Autors:
+    - Andres Camilo Tobon Mejia : github @Deepzirox
+    - Pon tu informacion plis xd
+
+"""
+
 import cmd
 import models
 import shlex
@@ -10,6 +21,26 @@ from models.state import State
 from models.review import Review
 from models.amenity import Amenity
 from models.place import Place
+
+# Preprocessor (onecmd) functions
+def method_validator(arg):
+    if "count()" not in arg and "all()" not in arg:
+        return False
+    else:
+        return True
+
+def store_handler(parsed):
+    jsonList = [{}]
+    store = models.storage.all()
+    for keys, values in store.items():
+        if  values.to_dict()['__class__'] in parsed:
+            jsonList[0].update({keys : values})
+    else:
+        if jsonList == [{}]:
+            print('** Unknown model: {}'.format(parsed[0]))
+        else:
+            print(jsonList)
+# --------------------------
 
 
 class HBNBCommand(cmd.Cmd):
@@ -33,15 +64,23 @@ class HBNBCommand(cmd.Cmd):
         if '.' not in line:
             return cmd.Cmd.default(self, line)
 
-    def onecmd(self, s):
+    def onecmd(self, line):
         '''
+        # advanced lol
         Preproccesor of the command Line, all arguments will be here after executing
         so we can validate if there's any ocurrence with <class> . <method> of the existing
         classes
         '''
-        if '.' in s:
-            print('Yes')
-        return cmd.Cmd.onecmd(self, s)
+        if '.' in line:
+            parsed = line.split('.')
+            if method_validator(parsed):
+                if parsed[1] == "all()":
+                    store_handler(parsed)
+                elif parsed[1] == "count()":
+                    print('Not yet')
+            else:
+                return cmd.Cmd.default(self, line)
+        return cmd.Cmd.onecmd(self, line)
 
     def do_create(self, args):
         """
