@@ -3,6 +3,8 @@ from datetime import datetime
 
 
 class Amenity(BaseModel):
+    """ Class Amenity
+    """
     name = ""
 
     def __init__(self, *args, **kwargs):
