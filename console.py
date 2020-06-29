@@ -2,7 +2,7 @@
 
 """
 
-    HBNBCommand - command Line tool for Airbnb clone
+    HBNBCommand - Command line tool for Airbnb clone
     Autors:
     - Andres Camilo Tobon Mejia : github @Deepzirox
     - Pon tu informacion plis xd
@@ -23,9 +23,31 @@ from models.amenity import Amenity
 from models.place import Place
 
 # Preprocessor (onecmd) functions
+def pre_parse_arguments(arg):
+    method, value = "", ""
+    flag = False
+    if arg[-1] == ')':
+        for char in arg:
+            if char == '(' or char == ')':
+                flag = True
+                continue
+            if flag is True:
+                if char == '"':
+                    continue
+                value += char
+            if flag is False:
+                method += char
+
+    return (method, value)
+
 def pre_method_validator(arg):
+    method = ""
     if "count()" not in arg and "all()" not in arg:
-        return False
+        method = pre_parse_arguments(arg[1])
+        if method[0] not in actions:
+            return False
+        else:
+            return True
     else:
         return True
 
@@ -52,6 +74,17 @@ def pre_count_handler(parsed):
             print('** No such instance: {}'.format(parsed[0]))
         else:
             print(instances)
+
+def pre_show_handler(classname, method_value):
+    if classname not in classes:
+        print("** class doesn't exist **")
+    else:
+        store = models.storage.all()
+        try:
+            key = "{}.{}".format(classname, method_value[1])
+            print(str(store[key]))
+        except KeyError:
+            print("** instance not found **")
 
 # --------------------------
 
@@ -92,6 +125,11 @@ class HBNBCommand(cmd.Cmd):
                     pre_all_handler(parsed)
                 elif parsed[1] == "count()":
                     pre_count_handler(parsed)
+                elif pre_parse_arguments(parsed[1])[0] == "show":
+                    if pre_parse_arguments(parsed[1])[1] == '':
+                        return cmd.Cmd.default(self, line)
+                    else:
+                        pre_show_handler(parsed[0], pre_parse_arguments(parsed[1]))
             else:
                 return cmd.Cmd.default(self, line)
 
@@ -205,11 +243,15 @@ class HBNBCommand(cmd.Cmd):
         if len(parsed) == 2:
             instancia, instance_id = parsed[0], parsed[1]
             tmp_dictionary = models.storage.all()
+            tmp_keys = list(tmp_dictionary.keys())
             key = instancia + '.' + instance_id
             if instancia not in classes:
                 print("** class doesn't exist **")
                 return 0
             # !! aca se debe encontrar una nueva forma de validar instancia
+            if key not in tmp_keys:
+                print('** not instance found')
+                return 0
             if key in tmp_dictionary:
                 del tmp_dictionary[key]
                 models.storage.save()

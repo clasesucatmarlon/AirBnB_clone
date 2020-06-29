@@ -6,6 +6,8 @@ import models
 
 
 def time_conversor(obj):
+    if type(obj) in [datetime]:
+        obj = obj.strftime('%Y-%m-%dT%H:%M:%S.%f')
     return datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S.%f")
 
 class BaseModel:
