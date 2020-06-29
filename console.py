@@ -26,6 +26,9 @@ from models.place import Place
 def pre_parse(arg):
     method, value = "", ""
     flag = False
+    
+    if not arg:
+        return (False, False)
     if arg[-1] == ')':
         for char in arg:
             if char == '(' or char == ')':
