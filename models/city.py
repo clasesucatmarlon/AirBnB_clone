@@ -14,6 +14,8 @@ class City(BaseModel):
         BaseModel.__init__(self, *args, **kwargs)
 
     def __str__(self):
+        """ Define method str
+        """
         self.__dict__.update({
             "created_at": time_conversor(self.created_at),
             "updated_at": time_conversor(self.updated_at),
@@ -24,6 +26,8 @@ class City(BaseModel):
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def to_dict(self):
+        """ Update to dictionary
+        """
         if type(self.created_at) in [str]:
             self.created_at = time_conversor(self.created_at)
         if type(self.updated_at) in [str]:
