@@ -23,13 +23,13 @@ from models.amenity import Amenity
 from models.place import Place
 
 # Preprocessor (onecmd) functions
-def method_validator(arg):
+def pre_method_validator(arg):
     if "count()" not in arg and "all()" not in arg:
         return False
     else:
         return True
 
-def store_handler(parsed):
+def pre_all_handler(parsed):
     jsonList = [{}]
     store = models.storage.all()
     for keys, values in store.items():
@@ -73,9 +73,9 @@ class HBNBCommand(cmd.Cmd):
         '''
         if '.' in line:
             parsed = line.split('.')
-            if method_validator(parsed):
+            if pre_method_validator(parsed):
                 if parsed[1] == "all()":
-                    store_handler(parsed)
+                    pre_all_handler(parsed)
                 elif parsed[1] == "count()":
                     print('Not yet')
             else:
