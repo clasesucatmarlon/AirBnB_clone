@@ -16,6 +16,8 @@ class BaseModel:
     """ Class Base Model
     """
     def __init__(self, *args, **kwargs):
+        """ Initialize method init
+        """
         if kwargs:
             self.created_at = time_conversor(kwargs["created_at"])
             self.updated_at = time_conversor(kwargs["updated_at"])
@@ -31,6 +33,8 @@ class BaseModel:
             models.storage.new(self)
 
     def __str__(self):
+        """ Define method str
+        """
         self.__dict__.update({
             "created_at": time_conversor(self.created_at),
             "updated_at": time_conversor(self.updated_at),
@@ -38,13 +42,19 @@ class BaseModel:
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def __repr__(self):
+        """ Define method repr
+        """
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
+        """ method save
+        """
         self.updated_at = datetime.today()
         models.storage.save()
 
     def to_dict(self):
+        """ Methods to dictionary
+        """
         if type(self.created_at) in [str]:
             self.created_at = time_conversor(self.created_at)
         if type(self.updated_at) in [str]:
