@@ -8,6 +8,8 @@ class Amenity(BaseModel):
     name = ""
 
     def __init__(self, *args, **kwargs):
+        """ Initialize modul init
+        """
         BaseModel.__init__(self, *args, **kwargs)
 
     def __str__(self):
