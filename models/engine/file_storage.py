@@ -33,4 +33,4 @@ class FileStorage:
                     name = k.split('.')[0]
                     if name in all_class:
                         obj = all_class[name](**v)
-                    self.__class__.__objects[k] = obj
+                        self.__class__.__objects[k] = obj
