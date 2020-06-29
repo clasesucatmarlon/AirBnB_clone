@@ -3,10 +3,14 @@ from datetime import datetime
 
 
 class City(BaseModel):
+    """ Class city
+    """
     state_id = ""
     name = ""
 
     def __init__(self, *args, **kwargs):
+        """ Initialize method init
+        """
         BaseModel.__init__(self, *args, **kwargs)
 
     def __str__(self):
