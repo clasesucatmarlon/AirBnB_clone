@@ -118,7 +118,6 @@ def pre_update(classname, method_value):
 
             try:
                 dummyDict = eval(data)
-                print('nope')
                 if type(dummyDict) not in [dict]:
                     raise TypeError
                 store = models.storage.all()
@@ -129,7 +128,6 @@ def pre_update(classname, method_value):
             if key not in keys:
                 print("** instance not found **")
             else:
-                print(type(dummyDict))
                 store[key].__dict__.update(dummyDict)
                 models.storage.save()
 
