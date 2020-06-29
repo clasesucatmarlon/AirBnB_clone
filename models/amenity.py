@@ -24,6 +24,8 @@ class Amenity(BaseModel):
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id, self.__dict__)
     
     def to_dict(self):
+        """ module dictionary create and update
+        """
         if type(self.created_at) in [str]:
             self.created_at = time_conversor(self.created_at)
         if type(self.updated_at) in [str]:
