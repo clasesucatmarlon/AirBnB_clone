@@ -13,6 +13,8 @@ def time_conversor(obj):
     return datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S.%f")
 
 class BaseModel:
+    """ Class Base Model
+    """
     def __init__(self, *args, **kwargs):
         if kwargs:
             self.created_at = time_conversor(kwargs["created_at"])
