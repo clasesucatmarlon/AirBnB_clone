@@ -93,11 +93,7 @@ class HBNBCommand(cmd.Cmd):
                 elif parsed[1] == "count()":
                     pre_count_handler(parsed)
             else:
-                try:
-                    if line.split(' ')[1] not in classes:
-                        return cmd.Cmd.default(self, line)
-                except IndexError:
-                    return cmd.Cmd.default(self, line)
+                return cmd.Cmd.default(self, line)
 
         return cmd.Cmd.onecmd(self, line)
 
