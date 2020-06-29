@@ -23,7 +23,7 @@ from models.amenity import Amenity
 from models.place import Place
 
 # Preprocessor (onecmd) functions
-def pre_parse_arguments(arg):
+def pre_parse(arg):
     method, value = "", ""
     flag = False
     if arg[-1] == ')':
@@ -40,10 +40,10 @@ def pre_parse_arguments(arg):
 
     return (method, value)
 
-def pre_method_validator(arg):
+def pre_method(arg):
     method = ""
     if "count()" not in arg and "all()" not in arg:
-        method = pre_parse_arguments(arg[1])
+        method = pre_parse(arg[1])
         if method[0] not in actions:
             return False
         else:
@@ -51,7 +51,7 @@ def pre_method_validator(arg):
     else:
         return True
 
-def pre_all_handler(parsed):
+def pre_all(parsed):
     jsonList = []
     store = models.storage.all()
     for values in store.values():
@@ -63,7 +63,7 @@ def pre_all_handler(parsed):
         else:
             print(jsonList)
 
-def pre_count_handler(parsed):
+def pre_count(parsed):
     instances = 0
     store = models.storage.all()
     for values in store.values():
@@ -75,7 +75,7 @@ def pre_count_handler(parsed):
         else:
             print(instances)
 
-def pre_show_handler(classname, method_value):
+def pre_show(classname, method_value):
     if classname not in classes:
         print("** class doesn't exist **")
     else:
@@ -85,6 +85,8 @@ def pre_show_handler(classname, method_value):
             print(str(store[key]))
         except KeyError:
             print("** instance not found **")
+
+
 
 # --------------------------
 
@@ -120,16 +122,16 @@ class HBNBCommand(cmd.Cmd):
         '''
         if '.' in line and line.split(' ')[0] not in actions:
             parsed = line.split('.')
-            if pre_method_validator(parsed):
+            if pre_method(parsed):
                 if parsed[1] == "all()":
-                    pre_all_handler(parsed)
+                    pre_all(parsed)
                 elif parsed[1] == "count()":
-                    pre_count_handler(parsed)
-                elif pre_parse_arguments(parsed[1])[0] == "show":
-                    if pre_parse_arguments(parsed[1])[1] == '':
+                    pre_count(parsed)
+                elif pre_parse(parsed[1])[0] == "show":
+                    if pre_parse(parsed[1])[1] == '':
                         return cmd.Cmd.default(self, line)
                     else:
-                        pre_show_handler(parsed[0], pre_parse_arguments(parsed[1]))
+                        pre_show(parsed[0], pre_parse(parsed[1]))
             else:
                 return cmd.Cmd.default(self, line)
 
