@@ -13,6 +13,8 @@ class Amenity(BaseModel):
         BaseModel.__init__(self, *args, **kwargs)
 
     def __str__(self):
+        """ update dictionary
+        """
         self.__dict__.update({
             "created_at": time_conversor(self.created_at),
             "updated_at": time_conversor(self.updated_at),
