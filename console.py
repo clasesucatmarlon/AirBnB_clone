@@ -90,7 +90,10 @@ def pre_show(classname, method_value):
             print("** instance not found **")
 
 def pre_destroy(classname, method_value):
-    print(method_value)
+    if classname not in classes:
+        print("** class doesn't exist **")
+    else:
+        print(method_value)
 
 # --------------------------
 
