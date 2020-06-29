@@ -37,9 +37,22 @@ def pre_all_handler(parsed):
             jsonList[0].update({keys : values})
     else:
         if jsonList == [{}]:
-            print('** Unknown model: {}'.format(parsed[0]))
+            print('** No such model: {}'.format(parsed[0]))
         else:
             print(jsonList)
+
+def pre_count_handler(parsed):
+    instances = 0
+    store = models.storage.all()
+    for keys, values in store.items():
+        if  values.to_dict()['__class__'] in parsed:
+            instances += 1
+    else:
+        if instances == 0:
+            print('** No such instance: {}'.format(parsed[0]))
+        else:
+            print(instances)
+
 # --------------------------
 
 
@@ -77,7 +90,7 @@ class HBNBCommand(cmd.Cmd):
                 if parsed[1] == "all()":
                     pre_all_handler(parsed)
                 elif parsed[1] == "count()":
-                    print('Not yet')
+                    pre_count_handler(parsed)
             else:
                 return cmd.Cmd.default(self, line)
         return cmd.Cmd.onecmd(self, line)
