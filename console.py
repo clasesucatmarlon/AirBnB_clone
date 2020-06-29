@@ -13,7 +13,7 @@ import cmd
 import models
 import shlex
 from json import loads, dumps
-from models import classes
+from models import classes, actions
 from models.base_model import BaseModel
 from models.city import City
 from models.user import User
@@ -74,6 +74,7 @@ class HBNBCommand(cmd.Cmd):
             Method that checks if the input contains dot, if false
             print the message error
         '''
+        
         if '.' not in line:
             return cmd.Cmd.default(self, line)
 
@@ -84,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
         so we can validate if there's any ocurrence with <class> . <method> of the existing
         classes
         '''
-        if '.' in line:
+        if '.' in line and line.split(' ')[0] not in actions:
             parsed = line.split('.')
             if pre_method_validator(parsed):
                 if parsed[1] == "all()":
@@ -92,7 +93,12 @@ class HBNBCommand(cmd.Cmd):
                 elif parsed[1] == "count()":
                     pre_count_handler(parsed)
             else:
-                return cmd.Cmd.default(self, line)
+                try:
+                    if line.split(' ')[1] not in classes:
+                        return cmd.Cmd.default(self, line)
+                except IndexError:
+                    return cmd.Cmd.default(self, line)
+
         return cmd.Cmd.onecmd(self, line)
 
     def do_create(self, args):
@@ -209,7 +215,6 @@ class HBNBCommand(cmd.Cmd):
                 return 0
             # !! aca se debe encontrar una nueva forma de validar instancia
             if key in tmp_dictionary:
-                print("Encontrado")
                 del tmp_dictionary[key]
                 models.storage.save()
 
