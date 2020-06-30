@@ -118,8 +118,14 @@ def pre_update(classname, method_value):
     """ 
     Function to handler the calling of the method update
 
-    classname: The classname given of the method
-    
+    classname: The classname given of the method (str)
+
+    method_value: given tuple that contains two posible options 
+        - (id, key, value) 
+        - (id, {key : ...})
+
+
+
     """
     
     print(method_value)
