@@ -305,6 +305,20 @@ class HBNBCommand(cmd.Cmd):
                 print(aux_list)
 
     def do_destroy(self, args):
+        """
+        destroy - destroy all list of json objects
+        -----------------------------------------------------
+        available models:
+        - BaseModel
+        - Amenity
+        - City
+        - Place
+        - Review
+        - User
+        - State
+        -----------------------------------------------------
+        @ usage - > <command> <model> {ex: destroy BaseModel}
+        """
         tmp_dictionary = {}
         parsed = args.split(' ')
         if parsed == ['']:
