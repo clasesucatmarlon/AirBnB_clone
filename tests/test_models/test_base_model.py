@@ -1,13 +1,15 @@
 #!/usr/bin/python3
-""" Contains unit tests for class BaseModel
-"""
+""" Contains unit tests for class BaseModel """
+
+
+import pep8
 import unittest
-#import pep8
 import io
 import sys
 from datetime import datetime
 from models.base_model import BaseModel
 import models
+
 
 class TestBaseModel(unittest.TestCase):
 	"""test for class BaseModel and its methods
@@ -23,19 +25,19 @@ class TestBaseModel(unittest.TestCase):
 		"""
 		pass
 
-	"""
-	def test_style_base(self):
-		test pep8
-		style = pep8.StyleGuide()
-		m = style.check_files(["models/base_model.py"])
-		self.assertEqual(m.total_errors, 0, "fix pep8")
-	"""
+
+	def test_base_pep8(self):
+		"""test pep8"""
+		pep8style = pep8.StyleGuide(quiet = True)
+		result = pep8style.check_files(['./models/base_model.py'])
+		self.assertEqual(result.total_errors, 0)
+
 
 	def test_docstring(self):
 		"""test doc in the file"""
-		self.assertIsNotNone(BaseModel._doc_)
-		self.assertIsNotNone(BaseModel._init.doc_)
-		self.assertIsNotNone(BaseModel.save._doc_)
+		self.assertIsNotNone(BaseModel.__doc__)
+		self.assertIsNotNone(BaseModel.__init__.__doc__)
+		self.assertIsNotNone(BaseModel.save.__doc__)
 
 	def test_uuid(self):
 		self.assertNotEqual(self.base1.id, self.base2.id)
