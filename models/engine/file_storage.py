@@ -4,6 +4,9 @@ from models.user import User
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
+from models.review import Review
+from models.state import State
+
 import json
 import os
 
@@ -36,7 +39,12 @@ class FileStorage:
         """
         all_class = {
             "BaseModel": BaseModel,
-            "User": User
+            "User": User,
+            "Amenity": Amenity,
+            "City": City,
+            "Place": Place,
+            "Review": Review,
+            "State": State
         }
         if os.path.isfile(self.__file_path):
             with open(self.__file_path, "r", encoding="UTF-8") as f:
