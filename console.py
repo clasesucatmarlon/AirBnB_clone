@@ -121,7 +121,7 @@ def update_dictionary(classname, method_value):
         (!) int this case the argument should contain a dictionary
     """
     if classname not in classes:
-        print("Class error")
+        print("** class doesn't exist **")
     else:
         arg1 = re.search(',', method_value[1])
         if not arg1:
@@ -152,7 +152,21 @@ def update_dictionary(classname, method_value):
                         print("** Invalid dictionary syntaxys **")
 
 def update_keyValue(classname, method_value):
-    pass
+    if classname not in classes:
+        print("** class doesn't exist **")
+    else:
+        parsed_args = []
+        pointer = method_value[1]
+        while True:
+            comma_idx = re.search(",", pointer)
+            if not comma_idx:
+                break
+            else:
+                parsed_args.append(pointer[comma_idx.start():])
+                pointer = pointer[comma_idx.end()]
+
+       parsed_args =''.join(parsed_args).split(',') # get list from commas
+
 
 def pre_update(classname, method_value):
     """
