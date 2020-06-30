@@ -114,6 +114,12 @@ def pre_destroy(classname, method_value):
             models.storage.save()
 
 def update_dictionary(classname, method_value):
+    """
+        classname: The classname given of the method (str)
+
+        method_value: given tuple that contains the method and the the argument
+        (!) int this case the argument should contain a dictionary
+    """
     if classname not in classes:
         print("Class error")
     else:
@@ -134,7 +140,8 @@ def update_dictionary(classname, method_value):
             else:
                 dopen = re.search('{', method_value[1])
                 if not dopen or method_value[1][-1] != "}":
-                    print("** second argument should be a type dictionary **")
+                    msg = "** Using key/value mode: The key cannot be a dictionary **"
+                    print(msg)
                     return 0
                 else:
                     try:
@@ -143,6 +150,9 @@ def update_dictionary(classname, method_value):
                         models.storage.save()
                     except:
                         print("** Invalid dictionary syntaxys **")
+
+def update_keyValue(classname, method_value):
+    pass
 
 def pre_update(classname, method_value):
     """
@@ -154,11 +164,10 @@ def pre_update(classname, method_value):
         - (id, key, value) 
         - (id, {key : ...})
     """
-    if "{" in method_value[1]:
-
-        # enter now confirmator if it's a valid dictionary
-
-        # get key from method_value[1]
+    if "{" in method_value[1] and "}" in method_value[1]:
+        update_dictionary(classname, method_value)
+    else:
+        update_keyValue(classname, method_value)
     print(method_value)
 
 
