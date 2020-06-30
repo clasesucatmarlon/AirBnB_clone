@@ -1,13 +1,12 @@
-#/usr/bin/env python3
-
+#!/usr/bin/env python3
 """
-
     HBNBCommand - Command line tool for Airbnb clone
     Autors:
-    - Andres Camilo Tobon Mejia : github @Deepzirox
-    - Pon tu informacion plis xd
-
+    - Andres Camilo Tobon Mejia - github: @Deepzirox
+    - Marlon Aurelio Garcia Morales - github: @clasesucatmarlon
 """
+
+
 import re
 import cmd
 import models
@@ -22,11 +21,11 @@ from models.review import Review
 from models.amenity import Amenity
 from models.place import Place
 
+
 # Preprocessor (onecmd) functions
 def pre_parse(arg, quoating=False):
     method, value = "", ""
     flag = False
-    
     if not arg:
         return (False, False)
     if arg[-1] == ')':
@@ -44,6 +43,7 @@ def pre_parse(arg, quoating=False):
 
     return (method, value)
 
+
 def pre_method(arg):
     method = ""
     if "count()" not in arg and "all()" not in arg:
@@ -55,11 +55,12 @@ def pre_method(arg):
     else:
         return True
 
+
 def pre_all(parsed):
     jsonList = []
     store = models.storage.all()
     for values in store.values():
-        if  values.to_dict()['__class__'] in parsed:
+        if values.to_dict()['__class__'] in parsed:
             jsonList.append(values)
     else:
         if jsonList == []:
@@ -67,11 +68,14 @@ def pre_all(parsed):
         else:
             print(jsonList)
 
+
 def pre_count(parsed):
+    """ count of instances
+    """
     instances = 0
     store = models.storage.all()
     for values in store.values():
-        if  values.to_dict()['__class__'] in parsed:
+        if values.to_dict()['__class__'] in parsed:
             instances += 1
     else:
         if instances == 0:
@@ -79,7 +83,10 @@ def pre_count(parsed):
         else:
             print(instances)
 
+
 def pre_show(classname, method_value):
+    """ show for class
+    """
     if classname not in classes:
         print("** class doesn't exist **")
     else:
@@ -90,7 +97,10 @@ def pre_show(classname, method_value):
         except KeyError:
             print("** instance not found **")
 
+
 def pre_destroy(classname, method_value):
+    """ Destroy to class
+    """
     if classname not in classes:
         print("** class doesn't exist **")
     else:
@@ -102,10 +112,12 @@ def pre_destroy(classname, method_value):
         else:
             del store[key]
             models.storage.save()
-        
-def pre_update(classname, method_value):
 
-    arg1, dopen, id_object = (0,0,0)
+
+def pre_update(classname, method_value):
+    """ Pre actializa to class
+    """
+    arg1, dopen, id_object = (0, 0, 0)
 
     if classname not in classes:
         print("Class error")
@@ -137,39 +149,37 @@ def pre_update(classname, method_value):
                     except:
                         print("** Invalid dictionary syntaxys **")
 
-            
-
 
 # --------------------------
-
 class HBNBCommand(cmd.Cmd):
     """Interprete de comandos"""
     prompt = "(hbnb) "
     classDict = {
         "BaseModel": BaseModel,
-        "User" : User,
-        "City" : City,
-        "State" : State,
-        "Review" : Review,
-        "Amenity" : Amenity,
-        "Place" : Place
+        "User": User,
+        "City": City,
+        "State": State,
+        "Review": Review,
+        "Amenity": Amenity,
+        "Place": Place
     }
+
     def default(self, line):
-        #print('default({})'.format(line))
+        # print('default({})'.format(line))
         '''
             Method that checks if the input contains dot, if false
             print the message error
         '''
-        
+
         if '.' not in line:
             return cmd.Cmd.default(self, line)
 
     def onecmd(self, line):
         '''
         # advanced lol
-        Preproccesor of the command Line, all arguments will be here after executing
-        so we can validate if there's any ocurrence with <class> . <method> of the existing
-        classes
+        Preproccesor of the command Line, all arguments will be
+        here after executing so we can validate if there's any
+        ocurrence with <class> . <method> of the existing classes
         '''
         if '.' in line and line.split(' ')[0] not in actions:
             parsed = line.split('.')
@@ -212,7 +222,6 @@ class HBNBCommand(cmd.Cmd):
         - State
         -----------------------------------------------------
         @ usage - > <command> <model> {ex: create BaseModel}
-
         """
         if len(args) < 2:
             print('** class name missing **')
@@ -224,7 +233,7 @@ class HBNBCommand(cmd.Cmd):
             except (NameError, SyntaxError):
                 print("** class doesn't exist **")
                 pass
-    
+
     def do_show(self, args):
         """
         show - show Python object representation of json object
@@ -238,7 +247,7 @@ class HBNBCommand(cmd.Cmd):
         - User
         - State
         -----------------------------------------------------
-        @ usage - > <command> <model> <id> {ex: show BaseModel 123asd1272bn28dn}
+        @ usage-> <command> <model> <id> {ex: show BaseModel 123asd1272bn28dn}
         """
         tmp_dictionary = {}
         parsed = args.split(' ')
@@ -264,7 +273,6 @@ class HBNBCommand(cmd.Cmd):
                 return 0
         else:
             pass
-
 
     def do_all(self, arg):
         """
@@ -295,7 +303,7 @@ class HBNBCommand(cmd.Cmd):
                 return 0
             else:
                 print(aux_list)
-    
+
     def do_destroy(self, args):
         tmp_dictionary = {}
         parsed = args.split(' ')
@@ -319,9 +327,8 @@ class HBNBCommand(cmd.Cmd):
                 del tmp_dictionary[key]
                 models.storage.save()
 
-
     def do_update(self, arg):
-        'Updates an instance based on the class name and id'
+        """Updates an instance based on the class name and id"""
         args = parse(arg)
         objects = models.storage.all()
         if not args:
@@ -348,30 +355,31 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
             return 0
 
-
     def do_quit(self, args):
         """
         Quit command to exit the program
         """
         return True
-    
+
     def do_EOF(self, args):
         """
         Quit command to exit the program
         """
         return True
-    
+
     def emptyline(self):
         """
         Dont do any action
         """
         pass
 
+
 def parse(arg):
-        """
-        Parse arguments and split by space
-        """
-        return tuple(shlex.split(arg))
+    """
+    Parse arguments and split by space
+    """
+    return tuple(shlex.split(arg))
+
 
 if __name__ == '__main__':
     interprete = HBNBCommand()
