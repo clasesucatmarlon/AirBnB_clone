@@ -8,7 +8,7 @@
     - Pon tu informacion plis xd
 
 """
-import ast
+import re
 import cmd
 import models
 import shlex
@@ -104,32 +104,41 @@ def pre_destroy(classname, method_value):
             models.storage.save()
         
 def pre_update(classname, method_value):
-    if classname not in classes:
-        print("** class doesn't exist **")
-    else:
-        parsed = method_value[1].split(',')
-        if len(parsed) != 2:
-            print('** update receive 2 arguments {} got)'.format(len(parsed)))
-        else:
-            ide, data = parsed[0], parsed[1].strip()
-            if ide[0] == '"':
-                ide = ide[1:-1]
-            key = "{}.{}".format(classname, ide)
 
-            try:
-                dummyDict = eval(data)
-                if type(dummyDict) not in [dict]:
-                    raise TypeError
-                store = models.storage.all()
-                keys = list(store.keys())
-            except:
-                print('** Second argument should be type dictionary **')
-                return 0
+    arg1, dopen, id_object = (0,0,0)
+
+    if classname not in classes:
+        print("Class error")
+    else:
+        arg1 = re.search(',', method_value[1])
+        if not arg1:
+            print("Function should receive two arguments")
+            return 0
+        else:
+            store = models.storage.all()
+            keys = list(store.keys())
+            id_object = method_value[1][0:arg1.start()]
+            if id_object[0] == '"' and id_object[-1] == '"':
+                id_object = id_object[1:-1]
+            key = "{}.{}".format(classname, id_object)
             if key not in keys:
-                print("** instance not found **")
+                print("** Instance not found **")
+                return 0
             else:
-                store[key].__dict__.update(dummyDict)
-                models.storage.save()
+                dopen = re.search('{', method_value[1])
+                if not dopen or method_value[1][-1] != "}":
+                    print("** second argument should be a type dictionary **")
+                    return 0
+                else:
+                    try:
+                        dummy = eval(method_value[1][dopen.start():])
+                        store[key].__dict__.update(dummy)
+                        models.storage.save()
+                    except:
+                        print("** Invalid dictionary syntaxys **")
+
+            
+
 
 # --------------------------
 
