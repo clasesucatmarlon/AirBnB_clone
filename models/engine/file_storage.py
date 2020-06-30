@@ -6,25 +6,34 @@ import os
 
 
 class FileStorage:
-
+    """ Class file storage
+    """
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
+        """ all objects
+        """
         return self.__objects
 
     def new(self, obj):
+        """ method new object
+        """
         self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
+        """ Method save
+        """
         with open(self.__file_path, "w", encoding="UTF-8") as f:
             obj_dict = {k: v.to_dict() for k, v in self.__objects.items()}
             json.dump(obj_dict, f, indent=4, sort_keys=True, default=str)
 
     def reload(self):
+        """ Method reload
+        """
         all_class = {
             "BaseModel": BaseModel,
-            "User" : User
+            "User": User
         }
         if os.path.isfile(self.__file_path):
             with open(self.__file_path, "r", encoding="UTF-8") as f:
