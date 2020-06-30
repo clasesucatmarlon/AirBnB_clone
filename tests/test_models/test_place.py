@@ -12,7 +12,8 @@ class TestPlace(unittest.TestCase):
         self.model.save()
 
     def test_public_attr(self):
-        """ if public attribute exists and if equal to empty string, int, or float
+        """ if public attribute exists and if equal to
+        empty string, int, or float
         """
         self.assertTrue(hasattr(self.model, "city_id"))
         self.assertTrue(hasattr(self.model, "user_id"))
@@ -62,6 +63,7 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(self.model.latitude, 1.1)
         self.assertEqual(self.model.longitude, 1.2)
         self.assertEqual(self.model.amenity_ids, ['1234', '12345'])
+
 
 if __name__ == '__main__':
     unittest.main()
