@@ -1,6 +1,9 @@
 #!/usr/bin/python3
 from models.base_model import BaseModel
 from models.user import User
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
 import json
 import os
 
@@ -17,7 +20,7 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
-        """ method new object
+        """ method new object given
         """
         self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
 
