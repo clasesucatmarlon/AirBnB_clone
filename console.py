@@ -115,7 +115,8 @@ def pre_destroy(classname, method_value):
 
 
 def pre_update(classname, method_value):
-    """ Pre actializa to class
+    """ 
+    Function to handler the calling of the method update
     """
     arg1, dopen, id_object = (0, 0, 0)
 
