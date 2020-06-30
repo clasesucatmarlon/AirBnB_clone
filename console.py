@@ -113,21 +113,52 @@ def pre_destroy(classname, method_value):
             del store[key]
             models.storage.save()
 
+def update_dictionary(classname, method_value):
+    if classname not in classes:
+        print("Class error")
+    else:
+        arg1 = re.search(',', method_value[1])
+        if not arg1:
+            print("Function should receive two arguments")
+            return 0
+        else:
+            store = models.storage.all()
+            keys = list(store.keys())
+            id_object = method_value[1][0:arg1.start()]
+            if id_object[0] == '"' and id_object[-1] == '"':
+                id_object = id_object[1:-1]
+            key = "{}.{}".format(classname, id_object)
+            if key not in keys:
+                print("** Instance not found **")
+                return 0
+            else:
+                dopen = re.search('{', method_value[1])
+                if not dopen or method_value[1][-1] != "}":
+                    print("** second argument should be a type dictionary **")
+                    return 0
+                else:
+                    try:
+                        dummy = eval(method_value[1][dopen.start():])
+                        store[key].__dict__.update(dummy)
+                        models.storage.save()
+                    except:
+                        print("** Invalid dictionary syntaxys **")
 
 def pre_update(classname, method_value):
-    """ 
+    """
     Function to handler the calling of the method update
 
     classname: The classname given of the method (str)
 
-    method_value: given tuple that contains two posible options 
+    method_value: given tuple that contains two posible options
         - (id, key, value) 
         - (id, {key : ...})
-
-
-
     """
-    
+    if "{" in method_value[1]:
+
+        # enter now confirmator if it's a valid dictionary
+
+        # get key from method_value[1]
     print(method_value)
 
 
