@@ -29,7 +29,7 @@ class FileStorage:
             json.dump(obj_dict, f, indent=4, sort_keys=True, default=str)
 
     def reload(self):
-        """ Method reload
+        """ Method reload that add in self.objects the dict of the file
         """
         all_class = {
             "BaseModel": BaseModel,
