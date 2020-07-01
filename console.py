@@ -116,6 +116,9 @@ def check(idx_args, data):
     valid_data = [0, 0]
     keys = list(models.storage.all().keys())
     id_obj = data[0][0:idx_args[0]]
+    if id_obj[0] == '"' and id_obj[-1] == '"':
+        id_obj = id_obj[1:-1]
+
     key = "{}.{}".format(data[1], id_obj)
     if key not in keys:
         check_results[0] = False
@@ -158,7 +161,6 @@ def pre_update(classname, method_value):
             return 0
 
     if n_args == 1:
-        #v_key, v_data = 
         ifvalid, valid_args = check(idx_args, (method_value[1], classname))
         if ifvalid[0] == False:
             print("** instance id not found **")
