@@ -139,7 +139,7 @@ def check(idx_args, data):
     elif len(idx_args) == 2:
         d_key = data[0][idx_args[0] + 1:idx_args[1]].strip()
         d_value = data[0][idx_args[1] + 1:].strip()
-        print("Key", d_key, "value", d_value)
+        return (check_results, ({d_key:d_value}, key))
         
 
 def args_data(string):
@@ -152,7 +152,7 @@ def args_data(string):
         return (commas, index)
 
 
-def save_valid_dict(data):
+def save_data(data):
     store = models.storage.all()
     store[data[1]].__dict__.update(data[0])
     models.storage.save()
@@ -173,9 +173,14 @@ def pre_update(classname, method_value):
             print("** Invalid dictionary **")
             return 0
         else:
-            save_valid_dict(valid_args)
+            save_data(valid_args)
     elif n_args == 2:
-        check(idx_args, (method_value[1], classname))
+        ifvalid, valid_args = check(idx_args, (method_value[1], classname))
+        if ifvalid[0] == False:
+            print("** instance id not found **")
+            return 0
+        else:
+            save_data(valid_args)
     else:
         print("** Invalid number of arguments **")
         return 0
