@@ -2,7 +2,7 @@
 
 """
 
-    HBNBCommand - Command line tool for Airbnb clone
+    HBNBdata - data line tool for Airbnb clone
     Autors:
     - Andres Camilo Tobon Mejia : github @Deepzirox
     - Pon tu informacion plis xd
@@ -102,44 +102,52 @@ def pre_destroy(classname, method_value):
         else:
             del store[key]
             models.storage.save()
-        
-def pre_update(classname, method_value):
 
-    arg1, dopen, id_object = (0,0,0)
+# Update handler functions -----------
 
-    if classname not in classes:
-        print("Class error")
+def check(idx_args, data):
+    '''
+    tuple (
+        [0] Key correct: True else False
+        -Is a dict: True else False
+    )
+
+    '''
+    keys = list(models.storage.all().keys())
+    id_obj = data[0][0:idx_args[0]]
+    key = "{}.{}".format(data[1], id_obj)
+    print(key)
+
+def args_data(string):
+    commas, index = 0, []
+    for c in range(len(string)):
+        if string[c] == ',':
+            commas += 1
+            index.append(c)
     else:
-        arg1 = re.search(',', method_value[1])
-        if not arg1:
-            print("Function should receive two arguments")
-            return 0
-        else:
-            store = models.storage.all()
-            keys = list(store.keys())
-            id_object = method_value[1][0:arg1.start()]
-            if id_object[0] == '"' and id_object[-1] == '"':
-                id_object = id_object[1:-1]
-            key = "{}.{}".format(classname, id_object)
-            if key not in keys:
-                print("** Instance not found **")
-                return 0
-            else:
-                dopen = re.search('{', method_value[1])
-                if not dopen or method_value[1][-1] != "}":
-                    print("** second argument should be a type dictionary **")
-                    return 0
-                else:
-                    try:
-                        dummy = eval(method_value[1][dopen.start():])
-                        store[key].__dict__.update(dummy)
-                        models.storage.save()
-                    except:
-                        print("** Invalid dictionary syntaxys **")
+        return (commas, index)
+
+def pre_update(classname, method_value):
+    n_args, idx_args = args_data(method_value[1])
+
+    print(method_value)
+    print(n_args)
+    print(idx_args)
+
+    if n_args == 1:
+        #v_key, v_data = 
+        check(idx_args, (method_value[1], classname))
+    elif n_args == 2:
+        print("key/value mode")
+    else:
+        print("** Invalid number of arguments **")
+        return 0
+
+    
 
 # --------------------------
 
-class HBNBCommand(cmd.Cmd):
+class HBNBdata(cmd.Cmd):
     """Interprete de comandos"""
     prompt = "(hbnb) "
     classDict = {
@@ -164,7 +172,7 @@ class HBNBCommand(cmd.Cmd):
     def onecmd(self, line):
         '''
         # advanced lol
-        Preproccesor of the command Line, all arguments will be here after executing
+        Preproccesor of the data Line, all arguments will be here after executing
         so we can validate if there's any ocurrence with <class> . <method> of the existing
         classes
         '''
@@ -208,7 +216,7 @@ class HBNBCommand(cmd.Cmd):
         - User
         - State
         -----------------------------------------------------
-        @ usage - > <command> <model> {ex: create BaseModel}
+        @ usage - > <data> <model> {ex: create BaseModel}
 
         """
         if len(args) < 2:
@@ -235,7 +243,7 @@ class HBNBCommand(cmd.Cmd):
         - User
         - State
         -----------------------------------------------------
-        @ usage - > <command> <model> <id> {ex: show BaseModel 123asd1272bn28dn}
+        @ usage - > <data> <model> <id> {ex: show BaseModel 123asd1272bn28dn}
         """
         tmp_dictionary = {}
         parsed = args.split(' ')
@@ -276,7 +284,7 @@ class HBNBCommand(cmd.Cmd):
         - User
         - State
         -----------------------------------------------------
-        @ usage - > <command> <model> {ex: all BaseModel}
+        @ usage - > <data> <model> {ex: all BaseModel}
         """
         aux_list = []
         with open('file.json', 'r') as jsonfile:
@@ -348,13 +356,13 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, args):
         """
-        Quit command to exit the program
+        Quit data to exit the program
         """
         return True
     
     def do_EOF(self, args):
         """
-        Quit command to exit the program
+        Quit data to exit the program
         """
         return True
     
@@ -371,5 +379,5 @@ def parse(arg):
         return tuple(shlex.split(arg))
 
 if __name__ == '__main__':
-    interprete = HBNBCommand()
+    interprete = HBNBdata()
     interprete.cmdloop()
