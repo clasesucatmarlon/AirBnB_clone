@@ -24,6 +24,8 @@ class TestFileStorage(unittest.TestCase):
     """
     @classmethod
     def setUpClass(cls):
+        """ method class setup
+        """
         cls.aux1 = Review()
         cls.aux1.place_id = "testing"
         cls.aux1.user_id = "idUSER"
@@ -31,9 +33,13 @@ class TestFileStorage(unittest.TestCase):
 
     @classmethod
     def teardown(cls):
+        """ method class tear
+        """
         del cls.aux1
 
     def teardown(self):
+        """ method tear
+        """
         try:
             os.remove("file.json")
         except Exception:
@@ -47,7 +53,7 @@ class TestFileStorage(unittest.TestCase):
     #    self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_all(self):
-        """ Tests method:all (returns dictionary <class>.<id> : <obj instance>)
+        """ Tests method:all
         """
         storage = FileStorage()
         instances_dic = storage.all()
