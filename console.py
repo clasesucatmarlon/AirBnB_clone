@@ -50,7 +50,7 @@ def pre_parse(arg, quoating=False):
 
 def pre_method(arg):
     '''
-        Check is the method is av
+        Check is the method is valid
     '''
     method = ""
     if "count()" not in arg and "all()" not in arg:
