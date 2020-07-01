@@ -4,8 +4,8 @@
 
     HBNBdata - data line tool for Airbnb clone
     Autors:
-    - Andres Camilo Tobon Mejia : github @Deepzirox
-    - Pon tu informacion plis xd
+    - Andres Camilo Tobon Mejia - github: @Deepzirox
+    - Marlon Aurelio Garcia Morales - Github: @clasesucatmarlon
 
 """
 import re
@@ -139,7 +139,7 @@ def check(idx_args, data):
             valid_data[0] = hi_dict
             valid_data[1] = key
             return (check_results, valid_data)
-        except:
+        except Exception:
             check_results[1] = False
             return (check_results, None)
     elif len(idx_args) == 2:
@@ -177,8 +177,8 @@ def pre_update(classname, method_value):
     n_args, idx_args = args_data(method_value[1])
 
     if classname not in classes:
-            print("** class doesn't exists **")
-            return 0
+        print("** class doesn't exists **")
+        return 0
 
     if n_args == 1:
         ifvalid, valid_args = check(idx_args, (method_value[1], classname))
@@ -312,13 +312,13 @@ class HBNBdata(cmd.Cmd):
             key = instancia + '.' + instance_id
             try:
                 new_ins = eval(instancia)
-            except:
+            except Exception:
                 print("** class doesn't exist **")
                 return 0
             try:
                 new_ins = eval(instancia)(**tmp_dictionary[key])
                 print(new_ins)
-            except:
+            except Exception:
                 print('** no instance found **')
                 return 0
         else:
@@ -401,7 +401,7 @@ class HBNBdata(cmd.Cmd):
         try:
             objects[key].__dict__[args[2]] = args[3]
             models.storage.save()
-        except:
+        except Exception:
             print("** no instance found **")
             return 0
 
@@ -425,10 +425,11 @@ class HBNBdata(cmd.Cmd):
 
 
 def parse(arg):
-        """
-        Parse arguments and split by space
-        """
-        return tuple(shlex.split(arg))
+    """
+    Parse arguments and split by space
+    """
+    return tuple(shlex.split(arg))
+
 
 if __name__ == '__main__':
     interprete = HBNBdata()
