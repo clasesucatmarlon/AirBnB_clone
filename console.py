@@ -64,6 +64,8 @@ def pre_method(arg):
 
 
 def pre_all(parsed):
+    """ function for pre all
+    """
     jsonList = []
     store = models.storage.all()
     for values in store.values():
@@ -77,6 +79,8 @@ def pre_all(parsed):
 
 
 def pre_count(parsed):
+    """ function for pre count
+    """
     instances = 0
     store = models.storage.all()
     for values in store.values():
@@ -90,6 +94,8 @@ def pre_count(parsed):
 
 
 def pre_show(classname, method_value):
+    """ function for pre show
+    """
     if classname not in classes:
         pass
     else:
@@ -102,6 +108,8 @@ def pre_show(classname, method_value):
 
 
 def pre_destroy(classname, method_value):
+    """ function for pre show
+    """
     if classname not in classes:
         print("** class doesn't exist **")
     else:
@@ -155,6 +163,8 @@ def check(idx_args, data):
 
 
 def args_data(string):
+    """ function input args
+    """
     commas, index = 0, []
     flag = False
     for c in range(len(string)):
@@ -168,12 +178,16 @@ def args_data(string):
 
 
 def save_data(data):
+    """ function for save data
+    """
     store = models.storage.all()
     store[data[1]].__dict__.update(data[0])
     models.storage.save()
 
 
 def pre_update(classname, method_value):
+    """ function for pre update
+    """
     n_args, idx_args = args_data(method_value[1])
 
     if classname not in classes:
@@ -355,6 +369,20 @@ class HBNBdata(cmd.Cmd):
                 print(aux_list)
 
     def do_destroy(self, args):
+        """
+        destroy - destroy all list of json objects
+        -----------------------------------------------------
+        available models:
+        - BaseModel
+        - Amenity
+        - City
+        - Place
+        - Review
+        - User
+        - State
+        -----------------------------------------------------
+        @ usage - > <data> <model> {ex: destroy BaseModel}
+        """
         tmp_dictionary = {}
         parsed = args.split(' ')
         if parsed == ['']:
