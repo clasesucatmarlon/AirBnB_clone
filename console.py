@@ -88,7 +88,7 @@ def pre_show(classname, method_value):
             key = "{}.{}".format(classname, method_value[1])
             print(str(store[key]))
         except KeyError:
-            print("** instance not found **")
+            print("** no instance found **")
 
 def pre_destroy(classname, method_value):
     if classname not in classes:
@@ -98,7 +98,7 @@ def pre_destroy(classname, method_value):
         keys = list(store.keys())
         key = "{}.{}".format(classname, method_value[1])
         if key not in keys:
-            print('** Instance not found **')
+            print('** no instance found **')
         else:
             del store[key]
             models.storage.save()
