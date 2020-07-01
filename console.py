@@ -24,6 +24,9 @@ from models.place import Place
 
 
 def pre_parse(arg, quoating=False):
+    '''
+        Return method name and argument parsed
+    '''
     method, value = "", ""
     flag = False
 
@@ -46,6 +49,9 @@ def pre_parse(arg, quoating=False):
 
 
 def pre_method(arg):
+    '''
+        Check is the method is av
+    '''
     method = ""
     if "count()" not in arg and "all()" not in arg:
         method = pre_parse(arg[1])
