@@ -109,14 +109,31 @@ def check(idx_args, data):
     '''
     tuple (
         [0] Key correct: True else False
-        -Is a dict: True else False
+        [1] Is a dict: True else False
     )
-
     '''
+    check_results = [True, True]
+    valid_data = [0, 0]
     keys = list(models.storage.all().keys())
     id_obj = data[0][0:idx_args[0]]
     key = "{}.{}".format(data[1], id_obj)
-    print(key)
+    if key not in keys:
+        check_results[0] = False
+    
+    # check if works for key/value or dictionary mode
+    if len(idx_args) == 1:
+        hi_dict = data[0][idx_args[0] + 1:].strip()
+        try:
+            hi_dict = eval(hi_dict)
+            if type(hi_dict) not in [dict]:
+                raise TypeError
+            valid_data[0] = hi_dict
+            valid_data[1] = key
+            return (check_results, valid_data)
+        except:
+            check_results[1] = False
+            return (check_results, None)
+        
 
 def args_data(string):
     commas, index = 0, []
@@ -127,16 +144,30 @@ def args_data(string):
     else:
         return (commas, index)
 
+
+def save_valid_dict(data):
+    store = models.storage.all()
+    store[data[1]].__dict__.update(data[0])
+    models.storage.save()
+ 
 def pre_update(classname, method_value):
     n_args, idx_args = args_data(method_value[1])
 
-    print(method_value)
-    print(n_args)
-    print(idx_args)
+    if classname not in classes:
+            print("** class doesn't exists **")
+            return 0
 
     if n_args == 1:
         #v_key, v_data = 
-        check(idx_args, (method_value[1], classname))
+        ifvalid, valid_args = check(idx_args, (method_value[1], classname))
+        if ifvalid[0] == False:
+            print("** instance id not found **")
+            return 0
+        elif ifvalid[1] == False:
+            print("** Invalid dictionary **")
+            return 0
+        else:
+            save_valid_dict(valid_args)
     elif n_args == 2:
         print("key/value mode")
     else:
