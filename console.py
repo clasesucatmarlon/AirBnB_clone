@@ -81,7 +81,7 @@ def pre_count(parsed):
 
 def pre_show(classname, method_value):
     if classname not in classes:
-        print("** class doesn't exist **")
+        pass
     else:
         store = models.storage.all()
         try:
