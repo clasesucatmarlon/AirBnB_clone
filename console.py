@@ -176,7 +176,7 @@ def pre_update(classname, method_value):
     if n_args == 1:
         ifvalid, valid_args = check(idx_args, (method_value[1], classname))
         if ifvalid[0] == False:
-            print("** instance id not found **")
+            print("** no instance found **")
             return 0
         elif ifvalid[1] == False:
             print("** Invalid dictionary **")
@@ -186,7 +186,7 @@ def pre_update(classname, method_value):
     elif n_args == 2:
         ifvalid, valid_args = check(idx_args, (method_value[1], classname))
         if ifvalid[0] == False:
-            print("** instance id not found **")
+            print("** no instance found **")
             return 0
         else:
             save_data(valid_args)
