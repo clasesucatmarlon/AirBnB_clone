@@ -135,7 +135,6 @@ def check(idx_args, data):
     if key not in keys:
         check_results[0] = False
 
-    # check if works for key/value or dictionary mode
     if len(idx_args) == 1:
         hi_dict = data[0][idx_args[0] + 1:].strip()
         try:
