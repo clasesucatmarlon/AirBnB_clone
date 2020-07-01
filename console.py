@@ -139,13 +139,22 @@ def check(idx_args, data):
     elif len(idx_args) == 2:
         d_key = data[0][idx_args[0] + 1:idx_args[1]].strip()
         d_value = data[0][idx_args[1] + 1:].strip()
+        if d_key[0] in ["'", '"']:
+            if d_key[-1] in ["'", '"']:
+                d_key = d_key[1:-1]
+        if d_value[0] in ["'", '"']:
+            if d_value[-1] in ["'", '"']:
+                d_value = d_value[1:-1]
         return (check_results, ({d_key:d_value}, key))
         
 
 def args_data(string):
     commas, index = 0, []
+    flag = False
     for c in range(len(string)):
-        if string[c] == ',':
+        if string[c] == "{":
+            flag = True
+        if string[c] == ',' and not flag:
             commas += 1
             index.append(c)
     else:
