@@ -114,15 +114,10 @@ def pre_destroy(classname, method_value):
             del store[key]
             models.storage.save()
 
-# Update handler functions -----------
-
 
 def check(idx_args, data):
     '''
-    tuple (
-        [0] Key correct: True else False
-        [1] Is a dict: True else False
-    )
+    Only god know how i do this
     '''
     check_results = [True, True]
     valid_data = [0, 0]
