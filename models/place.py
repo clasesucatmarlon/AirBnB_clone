@@ -1,8 +1,17 @@
+#!/usr/bin/python3
+"""
+class place
+"""
+
+
 from models.base_model import BaseModel, time_conversor
 from datetime import datetime
 
 
 class Place(BaseModel):
+    """
+    class place
+    """
     city_id = ""
     user_id = ""
     name = ""
@@ -16,9 +25,15 @@ class Place(BaseModel):
     amenity_ids = []
 
     def __init__(self, *args, **kwargs):
+        """
+        method init
+        """
         BaseModel.__init__(self, *args, **kwargs)
 
     def __str__(self):
+        """
+        method str
+        """
         self.__dict__.update({
             "created_at": time_conversor(self.created_at),
             "updated_at": time_conversor(self.updated_at),
@@ -39,6 +54,9 @@ class Place(BaseModel):
             self.__class__.__name__, self.id, self.__dict__)
 
     def to_dict(self):
+        """
+        method to_dict
+        """
         if type(self.created_at) in [str]:
             self.created_at = time_conversor(self.created_at)
         if type(self.updated_at) in [str]:
