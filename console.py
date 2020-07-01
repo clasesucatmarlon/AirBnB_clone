@@ -63,7 +63,7 @@ def pre_all(parsed):
             jsonList.append(values)
     else:
         if jsonList == []:
-            print('** No such model: {}'.format(parsed[0]))
+            print("** no instance found **")
         else:
             print(jsonList)
 
@@ -75,7 +75,7 @@ def pre_count(parsed):
             instances += 1
     else:
         if instances == 0:
-            print('** No such instance: {}'.format(parsed[0]))
+            print("** no instance found **")
         else:
             print(instances)
 
