@@ -136,6 +136,10 @@ def check(idx_args, data):
         except:
             check_results[1] = False
             return (check_results, None)
+    elif len(idx_args) == 2:
+        d_key = data[0][idx_args[0] + 1:idx_args[1]].strip()
+        d_value = data[0][idx_args[1] + 1:].strip()
+        print("Key", d_key, "value", d_value)
         
 
 def args_data(string):
@@ -171,7 +175,7 @@ def pre_update(classname, method_value):
         else:
             save_valid_dict(valid_args)
     elif n_args == 2:
-        print("key/value mode")
+        check(idx_args, (method_value[1], classname))
     else:
         print("** Invalid number of arguments **")
         return 0
