@@ -371,7 +371,7 @@ class HBNBdata(cmd.Cmd):
                 return 0
             # !! aca se debe encontrar una nueva forma de validar instancia
             if key not in tmp_keys:
-                print('** not instance found')
+                print('** no instance found **')
                 return 0
             if key in tmp_dictionary:
                 del tmp_dictionary[key]
