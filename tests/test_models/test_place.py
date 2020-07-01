@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+"""
+Test place class
+"""
+
+
 import unittest
 from datetime import datetime
 from models.place import Place
