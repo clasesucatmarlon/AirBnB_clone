@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/python3
 
 """
 
@@ -22,11 +22,11 @@ from models.review import Review
 from models.amenity import Amenity
 from models.place import Place
 
-# Preprocessor (onecmd) functions
+
 def pre_parse(arg, quoating=False):
     method, value = "", ""
     flag = False
-    
+
     if not arg:
         return (False, False)
     if arg[-1] == ')':
@@ -44,6 +44,7 @@ def pre_parse(arg, quoating=False):
 
     return (method, value)
 
+
 def pre_method(arg):
     method = ""
     if "count()" not in arg and "all()" not in arg:
@@ -55,11 +56,12 @@ def pre_method(arg):
     else:
         return True
 
+
 def pre_all(parsed):
     jsonList = []
     store = models.storage.all()
     for values in store.values():
-        if  values.to_dict()['__class__'] in parsed:
+        if values.to_dict()['__class__'] in parsed:
             jsonList.append(values)
     else:
         if jsonList == []:
@@ -67,17 +69,19 @@ def pre_all(parsed):
         else:
             print(jsonList)
 
+
 def pre_count(parsed):
     instances = 0
     store = models.storage.all()
     for values in store.values():
-        if  values.to_dict()['__class__'] in parsed:
+        if values.to_dict()['__class__'] in parsed:
             instances += 1
     else:
         if instances == 0:
             print("** no instance found **")
         else:
             print(instances)
+
 
 def pre_show(classname, method_value):
     if classname not in classes:
@@ -89,6 +93,7 @@ def pre_show(classname, method_value):
             print(str(store[key]))
         except KeyError:
             print("** no instance found **")
+
 
 def pre_destroy(classname, method_value):
     if classname not in classes:
@@ -104,6 +109,7 @@ def pre_destroy(classname, method_value):
             models.storage.save()
 
 # Update handler functions -----------
+
 
 def check(idx_args, data):
     '''
@@ -122,7 +128,7 @@ def check(idx_args, data):
     key = "{}.{}".format(data[1], id_obj)
     if key not in keys:
         check_results[0] = False
-    
+
     # check if works for key/value or dictionary mode
     if len(idx_args) == 1:
         hi_dict = data[0][idx_args[0] + 1:].strip()
@@ -145,8 +151,8 @@ def check(idx_args, data):
         if d_value[0] in ["'", '"']:
             if d_value[-1] in ["'", '"']:
                 d_value = d_value[1:-1]
-        return (check_results, ({d_key:d_value}, key))
-        
+        return (check_results, ({d_key: d_value}, key))
+
 
 def args_data(string):
     commas, index = 0, []
@@ -165,7 +171,8 @@ def save_data(data):
     store = models.storage.all()
     store[data[1]].__dict__.update(data[0])
     models.storage.save()
- 
+
+
 def pre_update(classname, method_value):
     n_args, idx_args = args_data(method_value[1])
 
@@ -175,17 +182,17 @@ def pre_update(classname, method_value):
 
     if n_args == 1:
         ifvalid, valid_args = check(idx_args, (method_value[1], classname))
-        if ifvalid[0] == False:
+        if ifvalid[0] is False:
             print("** no instance found **")
             return 0
-        elif ifvalid[1] == False:
+        elif ifvalid[1] is False:
             print("** Invalid dictionary **")
             return 0
         else:
             save_data(valid_args)
     elif n_args == 2:
         ifvalid, valid_args = check(idx_args, (method_value[1], classname))
-        if ifvalid[0] == False:
+        if ifvalid[0] is False:
             print("** no instance found **")
             return 0
         else:
@@ -194,38 +201,34 @@ def pre_update(classname, method_value):
         print("** Invalid number of arguments **")
         return 0
 
-    
-
-# --------------------------
 
 class HBNBdata(cmd.Cmd):
-    """Interprete de comandos"""
+    '''
+        Command Line Class
+    '''
     prompt = "(hbnb) "
     classDict = {
         "BaseModel": BaseModel,
-        "User" : User,
-        "City" : City,
-        "State" : State,
-        "Review" : Review,
-        "Amenity" : Amenity,
-        "Place" : Place
+        "User": User,
+        "City": City,
+        "State": State,
+        "Review": Review,
+        "Amenity": Amenity,
+        "Place": Place
     }
+
     def default(self, line):
-        #print('default({})'.format(line))
         '''
             Method that checks if the input contains dot, if false
             print the message error
         '''
-        
+
         if '.' not in line:
             return cmd.Cmd.default(self, line)
 
     def onecmd(self, line):
         '''
-        # advanced lol
-        Preproccesor of the data Line, all arguments will be here after executing
-        so we can validate if there's any ocurrence with <class> . <method> of the existing
-        classes
+        Every command given will pass for this :)
         '''
         if '.' in line and line.split(' ')[0] not in actions:
             parsed = line.split('.')
@@ -280,7 +283,7 @@ class HBNBdata(cmd.Cmd):
             except (NameError, SyntaxError):
                 print("** class doesn't exist **")
                 pass
-    
+
     def do_show(self, args):
         """
         show - show Python object representation of json object
@@ -321,7 +324,6 @@ class HBNBdata(cmd.Cmd):
         else:
             pass
 
-
     def do_all(self, arg):
         """
         all - show all list of json objects
@@ -351,7 +353,7 @@ class HBNBdata(cmd.Cmd):
                 return 0
             else:
                 print(aux_list)
-    
+
     def do_destroy(self, args):
         tmp_dictionary = {}
         parsed = args.split(' ')
@@ -374,7 +376,6 @@ class HBNBdata(cmd.Cmd):
             if key in tmp_dictionary:
                 del tmp_dictionary[key]
                 models.storage.save()
-
 
     def do_update(self, arg):
         'Updates an instance based on the class name and id'
@@ -404,24 +405,24 @@ class HBNBdata(cmd.Cmd):
             print("** no instance found **")
             return 0
 
-
     def do_quit(self, args):
         """
         Quit data to exit the program
         """
         return True
-    
+
     def do_EOF(self, args):
         """
         Quit data to exit the program
         """
         return True
-    
+
     def emptyline(self):
         """
         Dont do any action
         """
         pass
+
 
 def parse(arg):
         """
