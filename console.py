@@ -163,7 +163,8 @@ def check(idx_args, data):
 
 
 def args_data(string):
-    """ function input args
+    """ return tuple (commas, index)
+        of the given string
     """
     commas, index = 0, []
     flag = False
