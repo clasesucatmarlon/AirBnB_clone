@@ -60,7 +60,8 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        """ Methods to dictionary
+        """ Method to dictionary
+            that return dict representation
         """
         if type(self.created_at) in [str]:
             self.created_at = time_conversor(self.created_at)
