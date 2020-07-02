@@ -22,6 +22,7 @@ class BaseModel:
     """
     def __init__(self, *args, **kwargs):
         """ Initialize method init
+            Base instance
         """
         if kwargs:
             self.created_at = time_conversor(kwargs["created_at"])
