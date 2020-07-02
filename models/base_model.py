@@ -54,7 +54,7 @@ class BaseModel:
             self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
-        """ method save
+        """ method save that calls storage
         """
         self.updated_at = datetime.today()
         models.storage.save()
