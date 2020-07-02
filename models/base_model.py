@@ -38,7 +38,8 @@ class BaseModel:
             models.storage.new(self)
 
     def __str__(self):
-        """ Define method str
+        """ Define method str that return
+            string representation
         """
         self.__dict__.update({
             "created_at": time_conversor(self.created_at),
