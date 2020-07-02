@@ -48,7 +48,8 @@ class BaseModel:
             self.__class__.__name__, self.id, self.__dict__)
 
     def __repr__(self):
-        """ Define method repr
+        """ Define method repr that return
+            string representation
         """
         return "[{:s}] ({:s}) {}".format(
             self.__class__.__name__, self.id, self.__dict__)
