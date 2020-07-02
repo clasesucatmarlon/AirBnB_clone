@@ -125,7 +125,8 @@ def pre_destroy(classname, method_value):
 
 def check(idx_args, data):
     '''
-    Only god know how i do this
+    Return a list of booleans depending of the data given
+    and return a new dictionary from data
     '''
     check_results = [True, True]
     valid_data = [0, 0]
