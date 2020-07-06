@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+class Base model
+"""
+
 
 from uuid import uuid4
 from datetime import datetime
@@ -7,6 +11,7 @@ import models
 
 def time_conversor(obj):
     """ Define time conversor
+        that return new time object
     """
     if type(obj) in [datetime]:
         obj = obj.strftime('%Y-%m-%dT%H:%M:%S.%f')
@@ -18,6 +23,7 @@ class BaseModel:
     """
     def __init__(self, *args, **kwargs):
         """ Initialize method init
+            Base instance
         """
         if kwargs:
             self.created_at = time_conversor(kwargs["created_at"])
@@ -34,7 +40,8 @@ class BaseModel:
             models.storage.new(self)
 
     def __str__(self):
-        """ Define method str
+        """ Define method str that return
+            string representation
         """
         self.__dict__.update({
             "created_at": time_conversor(self.created_at),
@@ -44,19 +51,21 @@ class BaseModel:
             self.__class__.__name__, self.id, self.__dict__)
 
     def __repr__(self):
-        """ Define method repr
+        """ Define method repr that return
+            string representation
         """
         return "[{:s}] ({:s}) {}".format(
             self.__class__.__name__, self.id, self.__dict__)
 
     def save(self):
-        """ method save
+        """ method save that calls storage
         """
         self.updated_at = datetime.today()
         models.storage.save()
 
     def to_dict(self):
-        """ Methods to dictionary
+        """ Method to dictionary
+            that return dict representation
         """
         if type(self.created_at) in [str]:
             self.created_at = time_conversor(self.created_at)

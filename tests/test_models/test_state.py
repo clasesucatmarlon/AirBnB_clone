@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+"""
+Test state class
+"""
+
+
 import unittest
 from datetime import datetime
 from models.state import State

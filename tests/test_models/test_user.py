@@ -1,4 +1,7 @@
 #!/usr/bin/python
+"""
+Test user class
+"""
 import unittest
 from models.user import User
 

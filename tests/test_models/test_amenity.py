@@ -1,10 +1,16 @@
 #!/usr/bin/python3
+"""
+Test amenity class
+"""
+
+
 import unittest
 from models.amenity import Amenity
 
 
 class TestAmenity(unittest.TestCase):
-    """ test for amenity """
+    """ test for amenity
+    """
     def setUp(self):
         """ standard setUp()
         """

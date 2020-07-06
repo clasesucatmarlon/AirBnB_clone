@@ -1,3 +1,9 @@
+#!/usr/bin/python3
+"""
+class city
+"""
+
+
 from models.base_model import BaseModel, time_conversor
 from datetime import datetime
 

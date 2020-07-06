@@ -4,8 +4,8 @@
 
     HBNBdata - data line tool for Airbnb clone
     Autors:
-    - Andres Camilo Tobon Mejia : github @Deepzirox
-    - Pon tu informacion plis xd
+    - Andres Camilo Tobon Mejia - github: @Deepzirox
+    - Marlon Aurelio Garcia Morales - Github: @clasesucatmarlon
 
 """
 import re
@@ -50,7 +50,7 @@ def pre_parse(arg, quoating=False):
 
 def pre_method(arg):
     '''
-        Check is the method is av
+        Check is the method is valid
     '''
     method = ""
     if "count()" not in arg and "all()" not in arg:
@@ -64,6 +64,8 @@ def pre_method(arg):
 
 
 def pre_all(parsed):
+    """ function for pre all
+    """
     jsonList = []
     store = models.storage.all()
     for values in store.values():
@@ -77,6 +79,8 @@ def pre_all(parsed):
 
 
 def pre_count(parsed):
+    """ function for pre count
+    """
     instances = 0
     store = models.storage.all()
     for values in store.values():
@@ -90,6 +94,8 @@ def pre_count(parsed):
 
 
 def pre_show(classname, method_value):
+    """ function for pre show
+    """
     if classname not in classes:
         pass
     else:
@@ -102,6 +108,8 @@ def pre_show(classname, method_value):
 
 
 def pre_destroy(classname, method_value):
+    """ function for pre show
+    """
     if classname not in classes:
         print("** class doesn't exist **")
     else:
@@ -117,7 +125,8 @@ def pre_destroy(classname, method_value):
 
 def check(idx_args, data):
     '''
-    Only god know how i do this
+    Return a list of booleans depending of the data given
+    and return a new dictionary from data
     '''
     check_results = [True, True]
     valid_data = [0, 0]
@@ -139,7 +148,7 @@ def check(idx_args, data):
             valid_data[0] = hi_dict
             valid_data[1] = key
             return (check_results, valid_data)
-        except:
+        except Exception:
             check_results[1] = False
             return (check_results, None)
     elif len(idx_args) == 2:
@@ -155,6 +164,9 @@ def check(idx_args, data):
 
 
 def args_data(string):
+    """ return tuple (commas, index)
+        of the given string
+    """
     commas, index = 0, []
     flag = False
     for c in range(len(string)):
@@ -168,17 +180,21 @@ def args_data(string):
 
 
 def save_data(data):
+    """ function for save data
+    """
     store = models.storage.all()
     store[data[1]].__dict__.update(data[0])
     models.storage.save()
 
 
 def pre_update(classname, method_value):
+    """ function for pre update
+    """
     n_args, idx_args = args_data(method_value[1])
 
     if classname not in classes:
-            print("** class doesn't exists **")
-            return 0
+        print("** class doesn't exists **")
+        return 0
 
     if n_args == 1:
         ifvalid, valid_args = check(idx_args, (method_value[1], classname))
@@ -312,13 +328,13 @@ class HBNBdata(cmd.Cmd):
             key = instancia + '.' + instance_id
             try:
                 new_ins = eval(instancia)
-            except:
+            except Exception:
                 print("** class doesn't exist **")
                 return 0
             try:
                 new_ins = eval(instancia)(**tmp_dictionary[key])
                 print(new_ins)
-            except:
+            except Exception:
                 print('** no instance found **')
                 return 0
         else:
@@ -355,6 +371,20 @@ class HBNBdata(cmd.Cmd):
                 print(aux_list)
 
     def do_destroy(self, args):
+        """
+        destroy - destroy all list of json objects
+        -----------------------------------------------------
+        available models:
+        - BaseModel
+        - Amenity
+        - City
+        - Place
+        - Review
+        - User
+        - State
+        -----------------------------------------------------
+        @ usage - > <data> <model> {ex: destroy BaseModel}
+        """
         tmp_dictionary = {}
         parsed = args.split(' ')
         if parsed == ['']:
@@ -401,7 +431,7 @@ class HBNBdata(cmd.Cmd):
         try:
             objects[key].__dict__[args[2]] = args[3]
             models.storage.save()
-        except:
+        except Exception:
             print("** no instance found **")
             return 0
 
@@ -425,10 +455,11 @@ class HBNBdata(cmd.Cmd):
 
 
 def parse(arg):
-        """
-        Parse arguments and split by space
-        """
-        return tuple(shlex.split(arg))
+    """
+    Parse arguments and split by space
+    """
+    return tuple(shlex.split(arg))
+
 
 if __name__ == '__main__':
     interprete = HBNBdata()
