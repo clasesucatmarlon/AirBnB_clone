@@ -1,12 +1,7 @@
-.container .places article {
-    display: inline-block;
-    width: 390px;
-    padding: 20px;
-    border: 1px #FF5A5F solid;
-    border-radius: 4px;
-    left: 15px;
-    margin-bottom: 15px;
-    margin-right: 15px;
+.container .place {
+    display: flex;
+    padding-left: 25px;
+    /* flex-direction: column; */
 }
 
 .container .places h1 {
@@ -14,11 +9,29 @@
     text-align: left;
 }
 
-.container .places h2 {
-    font-size: 30px;
-    text-align: center;
+.container .places .name_place {
+    padding-top: 30px;
+    margin-bottom: -25px;
 }
 
-.container .places {
+.container .places .name_articles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.container .places article {
+    width: 390px;
+    padding: 20px;
+    margin: 20px;
+    border: 1px #FF5A5F solid;
+    border-radius: 4px;
     text-align: center;
+    font-size: 30px;
+}
+
+.container .places article h2 {
+    font-size: 30px;
+    text-align: center;
+    margin-top: -5px;
 }
